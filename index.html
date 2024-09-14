@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cult Classic Movies Quiz</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Baloo 2', sans-serif;
+            background-color: #38B6FF; /* Background color */
+            color: black;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        #yellow-box {
+            width: 200px;
+            height: 200px;
+            background-color: #FED405; /* Yellow color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            border: 5px solid black; /* Black edging */
+            transition: transform 0.1s ease-in-out;
+        }
+
+        #question-answer {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        /* Keyframes for the bounce animation */
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Class to trigger the bounce animation */
+        .animate-bounce {
+            animation: bounce 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="yellow-box">CULT CLASSIC MOVIES</div>
+
+    <div id="question-answer"></div>
+
+    <script>
+        const yellowBox = document.getElementById("yellow-box");
+        const questionAnswerDiv = document.getElementById("question-answer");
+
+        // Array of cult classic movies trivia questions and answers
+        const cultClassicMoviesQuestions = [
+            { question: "What 1975 film, directed by Jim Sharman, features a musical about a transvestite from Transylvania?", answer: "The Rocky Horror Picture Show" },
+            { question: "Which 1980 film is known for its quote 'Here's Johnny!' and is based on a Stephen King novel?", answer: "The Shining" },
+            { question: "What 1981 film features a character named 'Ash' fighting against the undead?", answer: "Evil Dead" },
+            { question: "Which 1990 film features a character named 'Travis Bickle' and includes the line 'You talkin' to me?'", answer: "Taxi Driver" },
+            { question: "What 1984 film directed by Wes Craven features a supernatural killer named Freddy Krueger?", answer: "A Nightmare on Elm Street" },
+            { question: "Which 1994 film is known for the line 'Say hello to my little friend!' and features Al Pacino as a drug lord?", answer: "Scarface" },
+            { question: "What 1977 film directed by George Lucas is known for its epic space battles and the character Darth Vader?", answer: "Star Wars" },
+            { question: "Which 1999 film, directed by David Fincher, follows a man with insomnia who starts an underground fight club?", answer: "Fight Club" },
+            { question: "What 1991 film features a character named 'Hannibal Lecter' and is based on a novel by Thomas Harris?", answer: "The Silence of the Lambs" },
+            { question: "Which 1982 film is known for its alien creature that terrorizes a group of researchers in Antarctica?", answer: "The Thing" },
+            { question: "What 1985 film features a time-traveling DeLorean and the character Marty McFly?", answer: "Back to the Future" },
+            { question: "Which 1993 film directed by Jim Jarmusch features a story about a vampire and his muse?", answer: "Only Lovers Left Alive" },
+            { question: "What 1987 film, directed by Paul Verhoeven, features a futuristic Detroit police officer becoming a cyborg?", answer: "RoboCop" },
+            { question: "Which 1988 film follows a group of high school students who have to survive a deadly game show?", answer: "The Running Man" },
+            { question: "What 1996 film directed by Baz Luhrmann is a modern adaptation of Shakespeare's 'Romeo and Juliet'?", answer: "Romeo + Juliet" },
+            { question: "Which 1999 film directed by M. Night Shyamalan features a boy who claims to see dead people?", answer: "The Sixth Sense" },
+            { question: "What 1971 film, directed by William Friedkin, follows a young girl possessed by a demon?", answer: "The Exorcist" },
+            { question: "Which 1989 film directed by Tim Burton is known for its dark humor and features a bio-exorcist named Beetlejuice?", answer: "Beetlejuice" },
+            { question: "What 1986 film features a punk rock gang fighting against supernatural forces in New York City?", answer: "The Warriors" },
+            { question: "Which 1995 film, directed by Michael Bay, follows a group of astronauts attempting to stop an asteroid from hitting Earth?", answer: "Armageddon" },
+            { question: "What 1976 film directed by Martin Scorsese features Robert De Niro as a mentally unstable Vietnam War veteran?", answer: "Taxi Driver" },
+            { question: "Which 2001 film, directed by Richard Kelly, features a troubled teenager who encounters a mysterious figure in a rabbit costume?", answer: "Donnie Darko" },
+            { question: "What 1980 film directed by Brian De Palma features a high school prom night and a vengeful telekinetic girl?", answer: "Carrie" },
+            { question: "Which 2000 film, directed by Guy Ritchie, follows a group of small-time crooks and their pursuit of a stolen diamond?", answer: "Snatch" },
+            { question: "What 1984 film directed by James Cameron features a cyborg sent from the future to kill the mother of the future leader of a human resistance?", answer: "The Terminator" },
+            { question: "Which 2003 film, directed by Quentin Tarantino, features a crime thriller involving a heist gone wrong?", answer: "Kill Bill: Vol. 1" },
+            { question: "What 2001 film, directed by David Lynch, is known for its surrealistic and dreamlike narrative?", answer: "Mulholland Drive" },
+            { question: "Which 1981 film directed by John Carpenter features a group of escaped prisoners seeking revenge on a desolate island?", answer: "Escape from New York" },
+            { question: "What 1983 film features the characters of a secretive government agency and a 'B' movie star with a hidden agenda?", answer: "The Adventures of Buckaroo Banzai Across the 8th Dimension" },
+            { question: "Which 1990 film directed by Tim Burton is a stop-motion animation featuring a young boy who befriends a creature made of spare parts?", answer: "Edward Scissorhands" },
+            { question: "What 1975 film features a young woman and her violent transformation into a killer after a traumatic event?", answer: "The Rocky Horror Picture Show" },
+            { question: "Which 1982 film directed by Steven Spielberg features an extraterrestrial being who becomes friends with a young boy?", answer: "E.T. the Extra-Terrestrial" },
+            { question: "What 1986 film features a gang of troubled youths battling against a corrupt police force?", answer: "The Outsiders" },
+            { question: "Which 2002 film, directed by Danny Boyle, follows a group of survivors of a virus outbreak?", answer: "28 Days Later" },
+            { question: "What 1987 film directed by David Lynch features a young man who finds himself in a surreal and nightmarish world?", answer: "Blue Velvet" },
+            { question: "Which 1994 film directed by Quentin Tarantino features an eclectic cast of characters and intertwining storylines?", answer: "Pulp Fiction" },
+            { question: "What 1992 film directed by Paul Verhoeven is set in a dystopian future where a robotic police officer fights crime?", answer: "RoboCop" },
+            { question: "Which 2007 film directed by Edgar Wright features a young man who must defeat his girlfriend's seven evil exes?", answer: "Scott Pilgrim vs. The World" },
+            { question: "What 1997 film, directed by David Fincher, is a psychological thriller about a serial killer who bases his murders on the seven deadly sins?", answer: "Se7en" },
+            { question: "Which 1999 film directed by Sam Mendes is a dark satire of suburban life?", answer: "American Beauty" },
+            { question: "What 1991 film directed by Jonathan Demme features an FBI trainee seeking the help of an imprisoned cannibalistic serial killer?", answer: "The Silence of the Lambs" },
+            { question: "Which 2005 film directed by Richard Kelly is a surreal science fiction film set in the aftermath of a plane crash?", answer: "Southland Tales" },
+            { question: "What 2009 film directed by Michael Bay features a group of soldiers attempting to escape from a futuristic city invaded by aliens?", answer: "Transformers: Revenge of the Fallen" },
+            { question: "Which 1998 film, directed by the Coen Brothers, is a dark comedy about a kidnapping gone wrong?", answer: "The Big Lebowski" },
+            { question: "What 1984 film directed by John Carpenter features a group of alien invaders attacking a small town?", answer: "They Live" },
+            { question: "Which 1998 film features a group of college students investigating a series of supernatural occurrences?", answer: "The Faculty" },
+            { question: "What 1986 film directed by David Lynch follows a small-town boy who discovers a severed ear and unravels a dark mystery?", answer: "Blue Velvet" },
+            { question: "Which 2008 film directed by Christopher Nolan is known for its complex narrative and features the character of the Joker?", answer: "The Dark Knight" },
+            { question: "What 1989 film directed by Tim Burton features a darkly comedic tale about a dead couple trying to scare away new tenants?", answer: "Beetlejuice" }
+        ];
+
+        let shuffledQuestions = [];
+        let questionIndex = 0;
+
+        // Shuffle the questions array
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Initialize questions
+        function initializeQuestions() {
+            shuffledQuestions = shuffleArray([...cultClassicMoviesQuestions]);
+            questionIndex = 0;
+            displayQuestion();
+        }
+
+        // Function to display the current question
+        function displayQuestion() {
+            if (shuffledQuestions.length === 0) {
+                questionAnswerDiv.innerHTML = "<strong>No more questions!</strong>";
+                return;
+            }
+            const currentQA = shuffledQuestions[questionIndex];
+            questionAnswerDiv.innerHTML = `<strong>Question:</strong> ${currentQA.question}<br><strong>Answer:</strong> ${currentQA.answer}`;
+        }
+
+        // Bounce animation on click
+        yellowBox.addEventListener("click", () => {
+            yellowBox.classList.add("animate-bounce");
+            setTimeout(() => {
+                yellowBox.classList.remove("animate-bounce");
+            }, 300);
+            questionIndex = (questionIndex + 1) % shuffledQuestions.length;
+            displayQuestion();
+        });
+
+        // Initialize the quiz
+        initializeQuestions();
+    </script>
+
+</body>
+</html>
